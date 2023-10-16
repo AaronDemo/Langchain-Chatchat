@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    aaron:
+      email: Aaron.zhu@cti-cert.com
+      name: Aaron Zhu
+      password: $2b$12$xey0ylR9d5hsAQ9F5FyGCO6lNVlMos4TXIT73hM.sgCGpag3G9z16
+    admin:
+      email: rbriggs@gmail.com
+      name: 管理员
+      password: $2b$12$nnxoi2kZiJ0pgp1KClCeB.x2Hl/9SzkudOVPQzqpWyE3Yp8WvZmba
+cookie:
+  expiry_days: 1
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - aaron.zhu@cti-cert.com

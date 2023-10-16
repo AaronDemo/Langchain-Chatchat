@@ -15,22 +15,12 @@ from server.utils import api_address
 
 api = ApiRequest(base_url=api_address())
 
-if __name__ == "__main__":
-    st.set_page_config(
-        "华测检测 CTI-AI",
-        os.path.join("img", "chatchat_icon_blue_square_v2.png"),
-        initial_sidebar_state="expanded",
-        menu_items={
-            'Get Help': 'mailto:aaron.zhu@cti-cert.com',
-            'Report a bug': 'mailto:aaron.zhu@cti-cert.com'
-            # 'About': f"""欢迎使用 Langchain-Chatchat WebUI {VERSION}！"""
-        }
-    )
+def home_index():
 
     if not chat_box.chat_inited:
         st.toast(
             f"欢迎使用 [`CTI-AI`](https://www.cti-cert.com/) ! \n\n"
-            f"当前使用模型`{LLM_MODEL}`, 您可以开始提问了."
+            f"当前使用模型`{llm_model_dict[LLM_MODEL]['name']}`, 您可以开始提问了."
         )
 
     pages = {
@@ -55,7 +45,7 @@ if __name__ == "__main__":
         # st.caption(
         #     f"""<p align="right">当前版本：{VERSION}</p>""",
         #     unsafe_allow_html=True,
-        # )
+        # )      
         options = list(pages)
         icons = [x["icon"] for x in pages.values()]
 
@@ -70,3 +60,6 @@ if __name__ == "__main__":
 
     if selected_page in pages:
         pages[selected_page]["func"](api)
+
+if __name__ == "__main__":
+    home_index()

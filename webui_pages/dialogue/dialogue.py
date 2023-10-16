@@ -13,7 +13,7 @@ from typing import List, Dict
 chat_box = ChatBox(
     assistant_avatar=os.path.join(
         "img",
-        "chatchat_icon_blue_square_v2.png"
+        "ai_service.jpg"
     )
 )
 
@@ -62,9 +62,9 @@ def dialogue_page(api: ApiRequest):
         dialogue_mode = st.selectbox("请选择对话模式：",
                                      ["大模型对话",
                                       "搜索引擎问答",
-                                      "知识库问答",
+                                    #   "知识库问答",
                                       ],
-                                     index=1,
+                                     index=0,
                                      on_change=on_mode_change,
                                      key="dialogue_mode",
                                      )
@@ -76,7 +76,7 @@ def dialogue_page(api: ApiRequest):
 
         def llm_model_format_func(x):
             if x in running_models:
-                return f"{x} (Running)"
+                return llm_model_dict[x]["name"] + "(Running)"
             return x
 
         running_models = api.list_running_models()
@@ -85,6 +85,9 @@ def dialogue_page(api: ApiRequest):
             if x in config_models:
                 config_models.remove(x)
         llm_models = running_models + config_models
+        llm_models_name = []
+        for x in llm_models:
+            llm_models_name.append(llm_model_dict[x]["name"])
         cur_model = st.session_state.get("cur_llm_model", LLM_MODEL)
         index = llm_models.index(cur_model)
         llm_model = st.selectbox("选择LLM模型：",
@@ -92,7 +95,7 @@ def dialogue_page(api: ApiRequest):
                                 index,
                                 format_func=llm_model_format_func,
                                 on_change=on_llm_change,
-                                # key="llm_model",
+                                key="llm_model",
                                 )
         if (st.session_state.get("prev_llm_model") != llm_model
             and not get_model_worker_config(llm_model).get("online_api")):
@@ -100,7 +103,7 @@ def dialogue_page(api: ApiRequest):
                 r = api.change_llm_model(st.session_state.get("prev_llm_model"), llm_model)
         st.session_state["cur_llm_model"] = llm_model
 
-        temperature = st.slider("Temperature：", 0.0, 1.0, TEMPERATURE, 0.05)
+        temperature = st.slider("Temperature（创造以及多样性）：", 0.0, 1.0, TEMPERATURE, 0.05)
         history_len = st.number_input("历史对话轮数：", 0, 10, HISTORY_LEN)
 
         def on_kb_change():
@@ -138,7 +141,7 @@ def dialogue_page(api: ApiRequest):
     if prompt := st.chat_input(chat_input_placeholder, key="prompt"):
         history = get_messages_history(history_len)
         chat_box.user_say(prompt)
-        if dialogue_mode == "LLM 对话":
+        if dialogue_mode == "大模型对话":
             chat_box.ai_say("正在思考...")
             text = ""
             r = api.chat_chat(prompt, history=history, model=llm_model, temperature=temperature)
