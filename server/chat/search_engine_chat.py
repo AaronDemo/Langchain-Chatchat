@@ -33,7 +33,7 @@ def duckduckgo_search(text, result_len=SEARCH_ENGINE_TOP_K):
 
 
 SEARCH_ENGINES = {"bing": bing_search,
-                  "duckduckgo": duckduckgo_search,
+                #   "duckduckgo": duckduckgo_search,
                   }
 
 
