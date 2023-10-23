@@ -5,6 +5,7 @@
 # 4. 运行WEB UI：streamlit run webui.py --server.port 7860
 
 import streamlit as st
+from configs.model_config import ONLINE_LLM_MODEL
 from webui_pages.utils import *
 from streamlit_option_menu import option_menu
 from webui_pages import *
@@ -20,7 +21,7 @@ def home_index():
     if not chat_box.chat_inited:
         st.toast(
             f"欢迎使用 [`CTI-AI`](https://www.cti-cert.com/) ! \n\n"
-            f"当前使用模型`{llm_model_dict[LLM_MODEL]['name']}`, 您可以开始提问了."
+            f"当前使用模型`{ONLINE_LLM_MODEL[LLM_MODEL]['name']}`, 您可以开始提问了."
         )
 
     pages = {

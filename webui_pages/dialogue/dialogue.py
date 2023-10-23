@@ -1,4 +1,5 @@
 import streamlit as st
+from configs.model_config import ONLINE_LLM_MODEL
 from webui_pages.utils import *
 from streamlit_chatbox import *
 from datetime import datetime
@@ -38,12 +39,11 @@ def get_messages_history(history_len: int, content_in_expander: bool = False) ->
 
 def dialogue_page(api: ApiRequest):
     chat_box.init_session()
-
     with st.sidebar:
         # TODO: 对话模型与会话绑定
         def on_mode_change():
             mode = st.session_state.dialogue_mode
-            text = f"已切换到 {mode} 模式。"
+            text = f"已切换到 {mode} 模式。"                    
             if mode == "知识库问答":
                 cur_kb = st.session_state.get("selected_kb")
                 if cur_kb:
@@ -54,8 +54,8 @@ def dialogue_page(api: ApiRequest):
         dialogue_mode = st.selectbox("请选择对话模式：",
                                      ["大模型对话",
                                       "搜索引擎问答",
-                                      "自定义Agent问答",
-                                    #   "知识库问答",
+                                    #   "自定义Agent问答",
+                                      "知识库问答",
                                       ],
                                      index=0,
                                      on_change=on_mode_change,
@@ -70,7 +70,7 @@ def dialogue_page(api: ApiRequest):
 
         def llm_model_format_func(x):
             if x in running_models:
-                return llm_model_dict[x]["name"] + "(Running)"
+                return ONLINE_LLM_MODEL[x]["name"] + "(Running)"
             return x
 
         running_models = api.list_running_models()
@@ -201,7 +201,7 @@ def dialogue_page(api: ApiRequest):
             chat_box.update_msg("\n\n".join(d.get("docs", [])), element_index=1, streaming=False)
         elif dialogue_mode == "搜索引擎问答":
             chat_box.ai_say([
-                f"正在执行 `{search_engine}` 搜索...",
+                f"正在执行 `{search_engine}` 联网搜索...",
                 Markdown("...", in_expander=True, title="网络搜索结果", state="complete"),
             ])
             text = ""
