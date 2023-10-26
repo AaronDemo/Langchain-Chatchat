@@ -288,7 +288,7 @@ def dialogue_page(api: ApiRequest):
     export_btn.download_button(
         "导出记录",
         "".join(chat_box.export2md()),
-        file_name=f"{now:%Y-%m-%d %H.%M}_对话记录.md",
+        file_name=f"{now:%Y-%m-%d %H.%M}_对话记录.html",
         mime="text/markdown",
         use_container_width=True,
     )

@@ -40,9 +40,6 @@ authenticator = stauth.Authenticate(
 # name, authentication_status, username = authenticator.login('登录', 'main')
 
 source = authenticator.cookie_manager.get('source')
-print(source)
-
-
 
 def home(login_username,login_name):
     st.sidebar.image(
@@ -114,7 +111,7 @@ else:
 
 
 st.markdown('''<style>
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.css-2zqmbv.eczjsme11 > div.css-6qob1r.eczjsme3 > div.css-10oheav.eczjsme4 {
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-2zqmbv.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-10oheav.eczjsme4 {
     padding: 2rem 1rem;
             }
 #root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.css-uf99v8.ea3mdgi5 > div.block-container.css-1y4p8pa.ea3mdgi4{
@@ -129,7 +126,7 @@ js_code = '''
             console.log("企业微信浏览器环境下")
             var now=new Date();
             //设置过期时间
-            now.setMinutes(now.getMinutes()+60)
+            now.setMinutes(now.getMinutes()+5)
             //设置Cookie
             document.cookie='source=wxwork;expires='+now.toUTCString()
         }else{
@@ -137,27 +134,7 @@ js_code = '''
             document.cookie='source=0'
         }
         console.log(ww.SDK_VERSION)
-        // 初始化
-        const wwLogin = ww.createWWLoginPanel({
-        el: '#ww_login',
-        params: {
-            login_type: 'CorpApp',
-            appid: 'ww31f12b15e58c1b05',
-            agentid: '1000136',
-            redirect_uri: 'https://aiservice.cticert.com',
-            state: 'loginState',
-            redirect_type: 'callback',
-        },
-        onCheckWeComLogin({ isWeComLogin }) {
-            console.log(isWeComLogin)
-        },
-        onLoginSuccess({ code }) {
-            console.log({ code })
-        },
-        onLoginFail(err) {
-            console.log(err)
-        },
-        }) 
+        
 '''
 components.html(f''' 
     <script src="https://wwcdn.weixin.qq.com/node/open/js/wecom-jssdk-1.3.1.js"></script>
