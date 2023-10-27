@@ -64,7 +64,7 @@ def dialogue_page(api: ApiRequest):
         # TODO: 对话模型与会话绑定
         def on_mode_change():
             mode = st.session_state.dialogue_mode
-            text = f"已切换到 {mode} 模式。"                    
+            text = f"已切换到 {mode} 模式。"
             if mode == "知识库问答":
                 cur_kb = st.session_state.get("selected_kb")
                 if cur_kb:
@@ -129,9 +129,30 @@ def dialogue_page(api: ApiRequest):
                     st.success(msg)
                     st.session_state["prev_llm_model"] = llm_model
 
-        temperature = st.slider("Temperature：", 0.0, 1.0, TEMPERATURE, 0.01)
+        index_prompt = {
+            "LLM 对话": "llm_chat",
+            "自定义Agent问答": "agent_chat",
+            "搜索引擎问答": "search_engine_chat",
+            "知识库问答": "knowledge_base_chat",
+        }
+        prompt_templates_kb_list = list(PROMPT_TEMPLATES[index_prompt[dialogue_mode]].keys())
+        prompt_template_name = prompt_templates_kb_list[0]
+        if "prompt_template_select" not in st.session_state:
+            st.session_state.prompt_template_select = prompt_templates_kb_list[0]
 
-        ## 部分模型可以超过10抡对话
+        def prompt_change():
+            text = f"已切换为 {prompt_template_name} 模板。"
+            st.toast(text)
+
+        prompt_template_select = st.selectbox(
+            "请选择Prompt模板：",
+            prompt_templates_kb_list,
+            index=0,
+            on_change=prompt_change,
+            key="prompt_template_select",
+        )
+        prompt_template_name = st.session_state.prompt_template_select
+        temperature = st.slider("Temperature：", 0.0, 1.0, TEMPERATURE, 0.05)
         history_len = st.number_input("历史对话轮数：", 0, 20, HISTORY_LEN)
 
         def on_kb_change():
