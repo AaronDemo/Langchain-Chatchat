@@ -26,7 +26,7 @@ class ChatGLMWorker(ApiModelWorker):
         # 这里的是chatglm api的模板，其它API的conv_template需要定制
         self.conv = conv.Conversation(
             name=self.model_names[0],
-            system_message="你是一个聪明的助手，请根据用户的提示来完成任务",
+            system_message="你是华测检测的一名资深员工，你是检测行业的专家，也是万能的知识库，你给出的答案要准确合理，礼貌回答同事们提出的问题",
             messages=[],
             roles=["Human", "Assistant"],
             sep="\n###",

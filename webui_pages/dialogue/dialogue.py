@@ -72,9 +72,9 @@ def dialogue_page(api: ApiRequest):
             st.toast(text)
 
         dialogue_mode = st.selectbox("请选择对话模式：",
-                                     ["大模型对话",
+                                     ["LLM 对话",
                                       "搜索引擎问答",
-                                    #   "自定义Agent问答",
+                                      "自定义Agent问答",
                                       "知识库问答",
                                       ],
                                      index=0,
@@ -91,7 +91,7 @@ def dialogue_page(api: ApiRequest):
 
         def llm_model_format_func(x):
             if x in running_models:
-                return ONLINE_LLM_MODEL[x]["name"] + "(Running)"
+                return x + "(Running)"
             return x
 
         running_models = list(api.list_running_models())
